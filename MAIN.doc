@@ -1,0 +1,64 @@
+interface BarberItem {
+  id: string;
+  firstName: string;
+  lastName: string;
+  rating: number;
+  review: [{ author: string; score: number; comment: string }];
+  description: string;
+  price: number;
+}
+
+import React, { useState, useEffect } from 'react';
+
+const Dashboard = () => {
+  const [data, setData] = useState<BarberItem[]>([
+    {
+      id: '',
+      firstName: '',
+      lastName: '',
+      rating: 0,
+      review: [{ author: '', score: 0, comment: '' }],
+      description: '',
+      price: 0,
+    },
+  ]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch('/data.json');
+      const json = await response.json();
+      setData(json);
+    }
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto auto', gap: '20px' }}>
+        {data.map((barber) => (
+          <div key={barber.id} style={{backgroundColor: 'rgb(202, 201, 201)', padding: '15px', width: '170px',color: "black", borderRadius: "12px"}}>
+            <h3>{barber.firstName} {barber.lastName}</h3>
+            <p>Rating: {barber.rating}</p>
+            <p>Description: {barber.description}</p>
+            <p>Price: {barber.price}</p>
+            <h3>View More</h3>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
+
+// interface BarberItem {
+//   id: string;
+//   firstName: string;
+//   lastName: string;
+//   rating: number;
+//   review: [{ author: string; score: number; comment: string }];
+//   description: string;
+//   price: number;
+// }
